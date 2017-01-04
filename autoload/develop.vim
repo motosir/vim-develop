@@ -51,20 +51,22 @@ function! develop#RunShellCommand(cmdline)
       botright 12new
       setlocal buftype=nofile bufhidden=wipe nobuflisted noswapfile nowrap 
       silent file [DevelopBuffer] 
+      setlocal filetype=develop
       let s:develop_buffer_created = 1
       let s:develop_bufnr = bufnr('%')
-      let line = 0
+      let line = 1
   else
       execute bufwinnr(s:develop_bufnr).'wincmd w'
       set modifiable
       let line = s:develop_line+1 
+      call setline(line, "")
+      let line = line +1
   endif
   
 "  call setline(1, 'You entered:    ' . a:cmdline)
-  let outhdr1 = 'Cmd:  ' .expanded_cmdline
-  let outhdr2 = substitute(outhdr1,'.','=','g')
-  call setline(line, outhdr1)
-  call setline(line+1, outhdr2) 
+"  let outhdr1 = 'Cmd:  ' .expanded_cmdline
+"  let outhdr2 = substitute(outhdr1,'.','=','g')
+  call setline(line, "~$ ".expanded_cmdline)
 
   silent execute '$read !'. expanded_cmdline
 
